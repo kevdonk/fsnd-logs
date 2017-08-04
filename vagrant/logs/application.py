@@ -41,8 +41,9 @@ def get_high_error_rate_days():
     """Return days with > 1% error rate"""
     return execute_query("""WITH log_with_error_rate AS (
                                 SELECT time ::timestamp::date,
-                                (100.0 * sum(CASE WHEN status LIKE '4%' 
-                                OR status like '5%' THEN 1 ELSE 0 END) / count(status))
+                                (100.0 * sum(CASE WHEN status LIKE '4%'
+                                OR status like '5%' THEN 1 ELSE 0 END)
+                                / count(status))
                                 AS error_rate
                                 FROM log
                                 GROUP BY time ::timestamp::date
@@ -51,7 +52,7 @@ def get_high_error_rate_days():
                             FROM log_with_error_rate
                             WHERE error_rate > 1.0
                             ORDER BY error_rate DESC;""")
-    
+
 
 def print_results(title, result):
     """Print a title, followed by a result with its view count"""
